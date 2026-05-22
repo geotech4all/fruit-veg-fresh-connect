@@ -35,12 +35,12 @@ function Home() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-0 -z-10">
+    <section className="relative isolate overflow-hidden">
+      <div className="absolute inset-0">
         <img src={heroFarm} alt="Lush farm at golden hour" className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-br from-primary/85 via-primary/70 to-primary/40" />
       </div>
-      <div className="mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-36">
+      <div className="relative mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-36">
         <div className="max-w-3xl">
           <span className="inline-flex items-center gap-2 rounded-full bg-accent/95 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent-foreground">
             <Leaf size={14} /> Agricultural Solutions Company
