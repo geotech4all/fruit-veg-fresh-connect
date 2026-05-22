@@ -9,6 +9,7 @@ import {
   ArrowRight,
   Leaf,
   CheckCircle2,
+  Globe2,
 } from "lucide-react";
 
 export const Route = createFileRoute("/services")({
@@ -90,6 +91,18 @@ const serviceList = [
       "Custom packaging & branding",
       "Semi-processed product lines",
       "Private-label solutions",
+    ],
+  },
+  {
+    icon: Globe2,
+    title: "Global Export Partnership",
+    summary:
+      "We are open to partnerships for produce exports to international markets — connecting Nigerian farms to buyers around the world.",
+    bullets: [
+      "Export-grade sorting & packaging",
+      "Documentation & compliance support",
+      "Reliable shipping & logistics partners",
+      "Long-term offtake for global buyers",
     ],
   },
 ];
