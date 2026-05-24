@@ -20,27 +20,19 @@ export const Route = createFileRoute("/services")({
     const origin = loaderData?.origin ?? "";
     const ogImage = `${origin}/og-image.jpg`;
     return {
-    meta: [
-      { title: "Our Services — Fruit&Veg" },
-      {
-        name: "description",
-        content:
-          "Fruit&Veg offers fresh produce supply, farmer partnerships, investment opportunities, storage solutions, and agro-processing across Nigeria.",
-      },
-      { property: "og:title", content: "Our Services — Fruit&Veg" },
-      {
-        property: "og:description",
-        content:
-          "Complete agricultural solutions: supply, partnership, investment, storage, and processing.",
-      },
-      { property: "og:url", content: `${origin}/services` },
-      { property: "og:image", content: ogImage },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      { name: "twitter:image", content: ogImage },
-      { name: "twitter:title", content: "Our Services — Fruit&Veg" },
-      { name: "twitter:description", content: "Complete agricultural solutions: supply, partnership, investment, storage, and processing." },
-    ],
+      meta: [
+        { title: "Our Services — Fruit&Veg" },
+        { name: "description", content: "Fruit&Veg offers fresh produce supply, farmer partnerships, investment opportunities, storage solutions, and agro-processing across Nigeria." },
+        { property: "og:title", content: "Our Services — Fruit&Veg" },
+        { property: "og:description", content: "Complete agricultural solutions: supply, partnership, investment, storage, and processing." },
+        { property: "og:url", content: `${origin}/services` },
+        { property: "og:image", content: ogImage },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
+        { name: "twitter:image", content: ogImage },
+        { name: "twitter:title", content: "Our Services — Fruit&Veg" },
+        { name: "twitter:description", content: "Complete agricultural solutions: supply, partnership, investment, storage, and processing." },
+      ],
     };
   },
   component: Services,
