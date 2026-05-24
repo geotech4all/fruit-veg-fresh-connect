@@ -78,6 +78,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "Fruit&Veg" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "Fruit&Veg — Fresh From Farm to You" },
+      { name: "twitter:title", content: "Fruit&Veg — Fresh From Farm to You" },
+      { property: "og:description", content: "Agricultural solutions company supplying fresh produce, partnering with farmers, and offering storage, processing, export, and investment opportunities." },
+      { name: "twitter:description", content: "Agricultural solutions company supplying fresh produce, partnering with farmers, and offering storage, processing, export, and investment opportunities." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/aa4a778d-b20a-4219-92c9-61c4391eef8b" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/aa4a778d-b20a-4219-92c9-61c4391eef8b" },
     ],
     links: [
       {
