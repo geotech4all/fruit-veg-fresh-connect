@@ -12,8 +12,14 @@ import {
   Globe2,
 } from "lucide-react";
 
+import { getRequestOrigin } from "@/lib/origin.functions";
+
 export const Route = createFileRoute("/services")({
-  head: () => ({
+  loader: async () => ({ origin: await getRequestOrigin() }),
+  head: ({ loaderData }) => {
+    const origin = loaderData?.origin ?? "";
+    const ogImage = `${origin}/og-image.jpg`;
+    return {
     meta: [
       { title: "Our Services — Fruit&Veg" },
       {
@@ -27,8 +33,16 @@ export const Route = createFileRoute("/services")({
         content:
           "Complete agricultural solutions: supply, partnership, investment, storage, and processing.",
       },
+      { property: "og:url", content: `${origin}/services` },
+      { property: "og:image", content: ogImage },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:image", content: ogImage },
+      { name: "twitter:title", content: "Our Services — Fruit&Veg" },
+      { name: "twitter:description", content: "Complete agricultural solutions: supply, partnership, investment, storage, and processing." },
     ],
-  }),
+    };
+  },
   component: Services,
 });
 

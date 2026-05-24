@@ -6,23 +6,37 @@ import pepperImg from "@/assets/pepper.jpg";
 import tomatoImg from "@/assets/tomato.jpg";
 import maizeImg from "@/assets/maize.jpg";
 
+import { getRequestOrigin } from "@/lib/origin.functions";
+
 export const Route = createFileRoute("/products")({
-  head: () => ({
-    meta: [
-      { title: "Our Products — Fruit&Veg" },
-      {
-        name: "description",
-        content:
-          "Farm-fresh okro, pepper, tomato, and maize from Fruit&Veg's farm in Osun State, Nigeria. Wholesale and retail supply available.",
-      },
-      { property: "og:title", content: "Our Products — Fruit&Veg" },
-      {
-        property: "og:description",
-        content:
-          "Premium farm produce: okro, pepper, tomato, and maize — fresh from our farm in Osun State.",
-      },
-    ],
-  }),
+  loader: async () => ({ origin: await getRequestOrigin() }),
+  head: ({ loaderData }) => {
+    const origin = loaderData?.origin ?? "";
+    const ogImage = `${origin}/og-image.jpg`;
+    return {
+      meta: [
+        { title: "Our Products — Fruit&Veg" },
+        {
+          name: "description",
+          content:
+            "Farm-fresh okro, pepper, tomato, and maize from Fruit&Veg's farm in Osun State, Nigeria. Wholesale and retail supply available.",
+        },
+        { property: "og:title", content: "Our Products — Fruit&Veg" },
+        {
+          property: "og:description",
+          content:
+            "Premium farm produce: okro, pepper, tomato, and maize — fresh from our farm in Osun State.",
+        },
+        { property: "og:url", content: `${origin}/products` },
+        { property: "og:image", content: ogImage },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
+        { name: "twitter:image", content: ogImage },
+        { name: "twitter:title", content: "Our Products — Fruit&Veg" },
+        { name: "twitter:description", content: "Premium farm produce: okro, pepper, tomato, and maize." },
+      ],
+    };
+  },
   component: Products,
 });
 
