@@ -2,23 +2,36 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Award, Users, TrendingUp, Truck, ShieldCheck, Leaf, Globe, ArrowRight, HeartHandshake, PackageCheck, BadgeCheck, Store, Factory, ClipboardCheck } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 
+import { getRequestOrigin } from "@/lib/origin.functions";
+
 export const Route = createFileRoute("/membership")({
-  head: () => ({
-    meta: [
-      { title: "Membership & Partnership — Fruit&Veg" },
-      {
-        name: "description",
-        content:
-          "Join Fruit&Veg as a supply partner, investor, or wholesale buyer. Discover why businesses choose us for fresh produce, export partnerships, and agricultural solutions.",
-      },
-      { property: "og:title", content: "Membership & Partnership — Fruit&Veg" },
-      {
-        property: "og:description",
-        content: "Partner with Fruit&Veg for fresh produce supply, export opportunities, and agricultural investment.",
-      },
-      { property: "og:url", content: "/membership" },
-    ],
-  }),
+  loader: async () => ({ origin: await getRequestOrigin() }),
+  head: ({ loaderData }) => {
+    const origin = loaderData?.origin ?? "";
+    const ogImage = `${origin}/og-image.jpg`;
+    return {
+      meta: [
+        { title: "Membership & Partnership — Fruit&Veg" },
+        {
+          name: "description",
+          content:
+            "Join Fruit&Veg as a supply partner, investor, or wholesale buyer. Discover why businesses choose us for fresh produce, export partnerships, and agricultural solutions.",
+        },
+        { property: "og:title", content: "Membership & Partnership — Fruit&Veg" },
+        {
+          property: "og:description",
+          content: "Partner with Fruit&Veg for fresh produce supply, export opportunities, and agricultural investment.",
+        },
+        { property: "og:url", content: `${origin}/membership` },
+        { property: "og:image", content: ogImage },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
+        { name: "twitter:image", content: ogImage },
+        { name: "twitter:title", content: "Membership & Partnership — Fruit&Veg" },
+        { name: "twitter:description", content: "Partner with Fruit&Veg for fresh produce, exports, and investment." },
+      ],
+    };
+  },
   component: Membership,
 });
 

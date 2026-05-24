@@ -3,21 +3,33 @@ import { Link } from "@tanstack/react-router";
 import { Sparkles, ShieldCheck, Leaf, Lightbulb, Users, Heart, ArrowRight, Target, Eye } from "lucide-react";
 import aboutHero from "@/assets/about-hero.jpg";
 import { SiteLayout } from "@/components/SiteLayout";
+import { getRequestOrigin } from "@/lib/origin.functions";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About — Fruit&Veg" },
-      {
-        name: "description",
-        content:
-          "Fruit&Veg connects farms to markets — supplying fresh produce, partnering with farmers, and advancing agricultural investment, storage and processing.",
-      },
-      { property: "og:title", content: "About Fruit&Veg" },
-      { property: "og:description", content: "An agricultural solutions company bridging farmers, retailers, and consumers." },
-      { property: "og:url", content: "/about" },
-    ],
-  }),
+  loader: async () => ({ origin: await getRequestOrigin() }),
+  head: ({ loaderData }) => {
+    const origin = loaderData?.origin ?? "";
+    const ogImage = `${origin}/og-image.jpg`;
+    return {
+      meta: [
+        { title: "About — Fruit&Veg" },
+        {
+          name: "description",
+          content:
+            "Fruit&Veg connects farms to markets — supplying fresh produce, partnering with farmers, and advancing agricultural investment, storage and processing.",
+        },
+        { property: "og:title", content: "About Fruit&Veg" },
+        { property: "og:description", content: "An agricultural solutions company bridging farmers, retailers, and consumers." },
+        { property: "og:url", content: `${origin}/about` },
+        { property: "og:image", content: ogImage },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
+        { name: "twitter:image", content: ogImage },
+        { name: "twitter:title", content: "About Fruit&Veg" },
+        { name: "twitter:description", content: "An agricultural solutions company bridging farmers, retailers, and consumers." },
+      ],
+    };
+  },
   component: About,
 });
 

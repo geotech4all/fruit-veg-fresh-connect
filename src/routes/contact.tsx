@@ -3,16 +3,29 @@ import { Mail, MapPin, Phone, ArrowRight, Send, Package, Users, Globe } from "lu
 import { useState } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 
+import { getRequestOrigin } from "@/lib/origin.functions";
+
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact — Fruit&Veg" },
-      { name: "description", content: "Reach Fruit&Veg for supply requests, partnerships, and export enquiries. Head office in Lagos, farm in Osun State. Email: fruitvegfarm@gmail.com" },
-      { property: "og:title", content: "Contact Fruit&Veg" },
-      { property: "og:description", content: "Send a supply request or reach Fruit&Veg in Lagos and Osun State." },
-      { property: "og:url", content: "/contact" },
-    ],
-  }),
+  loader: async () => ({ origin: await getRequestOrigin() }),
+  head: ({ loaderData }) => {
+    const origin = loaderData?.origin ?? "";
+    const ogImage = `${origin}/og-image.jpg`;
+    return {
+      meta: [
+        { title: "Contact — Fruit&Veg" },
+        { name: "description", content: "Reach Fruit&Veg for supply requests, partnerships, and export enquiries. Head office in Lagos, farm in Osun State. Email: fruitvegfarm@gmail.com" },
+        { property: "og:title", content: "Contact Fruit&Veg" },
+        { property: "og:description", content: "Send a supply request or reach Fruit&Veg in Lagos and Osun State." },
+        { property: "og:url", content: `${origin}/contact` },
+        { property: "og:image", content: ogImage },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
+        { name: "twitter:image", content: ogImage },
+        { name: "twitter:title", content: "Contact Fruit&Veg" },
+        { name: "twitter:description", content: "Send a supply request or reach Fruit&Veg in Lagos and Osun State." },
+      ],
+    };
+  },
   component: Contact,
 });
 
