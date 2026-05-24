@@ -3,21 +3,34 @@ import { ArrowRight, Leaf, Truck, ShieldCheck, Sprout, Package, Warehouse } from
 import heroFarm from "@/assets/hero-farm.jpg";
 import produceGrid from "@/assets/produce-grid.jpg";
 import { SiteLayout } from "@/components/SiteLayout";
+import { getRequestOrigin } from "@/lib/origin.functions";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Fruit&Veg — Fresh From Farm to You" },
-      {
-        name: "description",
-        content:
-          "Fruit&Veg is an agricultural company supplying fresh produce, partnering with farmers, and offering storage, processing, and investment solutions across Nigeria.",
-      },
-      { property: "og:title", content: "Fruit&Veg — Fresh From Farm to You" },
-      { property: "og:description", content: "Connecting farms to markets with freshness, quality, and sustainability." },
-      { property: "og:url", content: "/" },
-    ],
-  }),
+  loader: async () => ({ origin: await getRequestOrigin() }),
+  head: ({ loaderData }) => {
+    const origin = loaderData?.origin ?? "";
+    const ogImage = `${origin}/og-image.jpg`;
+    return {
+      meta: [
+        { title: "Fruit&Veg — Fresh From Farm to You" },
+        {
+          name: "description",
+          content:
+            "Fruit&Veg is an agricultural company supplying fresh produce, partnering with farmers, and offering storage, processing, and investment solutions across Nigeria.",
+        },
+        { property: "og:title", content: "Fruit&Veg — Fresh From Farm to You" },
+        { property: "og:description", content: "Connecting farms to markets with freshness, quality, and sustainability." },
+        { property: "og:url", content: `${origin}/` },
+        { property: "og:image", content: ogImage },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
+        { property: "og:image:alt", content: "Fruit&Veg farm at golden hour" },
+        { name: "twitter:image", content: ogImage },
+        { name: "twitter:title", content: "Fruit&Veg — Fresh From Farm to You" },
+        { name: "twitter:description", content: "Connecting farms to markets with freshness, quality, and sustainability." },
+      ],
+    };
+  },
   component: Home,
 });
 
