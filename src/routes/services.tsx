@@ -41,7 +41,8 @@ export const Route = createFileRoute("/services")({
       { name: "twitter:title", content: "Our Services — Fruit&Veg" },
       { name: "twitter:description", content: "Complete agricultural solutions: supply, partnership, investment, storage, and processing." },
     ],
-  }),
+    };
+  },
   component: Services,
 });
 
