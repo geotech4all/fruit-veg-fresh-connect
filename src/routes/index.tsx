@@ -48,42 +48,107 @@ function Home() {
 
 function Hero() {
   return (
-    <section className="relative isolate overflow-hidden">
-      <div className="absolute inset-0">
-        <img src={heroFarm} alt="Lush farm at golden hour" className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/85 via-primary/70 to-primary/40" />
-      </div>
-      <div className="relative mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-36">
-        <div className="max-w-3xl">
-          <span className="inline-flex items-center gap-2 rounded-full bg-accent/95 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent-foreground">
-            <Leaf size={14} /> Agricultural Solutions Company
-          </span>
-          <h1 className="mt-6 text-5xl font-extrabold leading-[1.05] text-primary-foreground md:text-7xl">
-            Fresh From <span className="text-accent">Farm</span> <br className="hidden md:block" /> to You.
-          </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-primary-foreground/85 md:text-xl">
-            We connect farms to markets — supplying premium fruits, vegetables and cash crops with
-            quality, sustainability, and value at every step.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-3">
+    <section className="relative overflow-hidden bg-background py-16 md:py-24">
+      {/* Decorative blobs */}
+      <div className="pointer-events-none absolute -top-24 right-0 h-[420px] w-[420px] rounded-full bg-accent/15 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-32 left-0 h-[480px] w-[480px] rounded-full bg-primary/10 blur-3xl" />
+
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-4 md:px-8 lg:grid-cols-12">
+        {/* Content */}
+        <div className="space-y-10 lg:col-span-6">
+          <div className="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.18em] text-accent">
+            <span className="h-[2px] w-8 bg-accent" />
+            Agricultural Solutions Company
+          </div>
+
+          <div className="space-y-6">
+            <h1
+              style={{ fontFamily: "var(--font-serif)" }}
+              className="text-6xl font-normal leading-[1.02] text-primary md:text-7xl lg:text-[5.5rem]"
+            >
+              Fresh From <span className="italic text-accent">Farm</span>
+              <br />
+              to You.
+            </h1>
+            <p className="max-w-xl text-lg leading-relaxed text-primary/70">
+              We connect farms to markets — supplying premium fruits, vegetables and cash crops with
+              quality, sustainability, and value at every step. Partnerships open for produce
+              exports worldwide.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-4 pt-2">
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-lg transition-all hover:brightness-105 hover:shadow-xl"
+              className="group inline-flex items-center gap-2 rounded-xl bg-accent px-8 py-4 text-sm font-bold text-accent-foreground shadow-xl shadow-accent/20 transition-all hover:brightness-105"
             >
-              Request Supply <ArrowRight size={16} />
+              Request Supply
+              <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
               to="/products"
-              className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 bg-primary-foreground/10 px-6 py-3.5 text-sm font-semibold text-primary-foreground backdrop-blur-sm transition-colors hover:bg-primary-foreground/20"
+              className="inline-flex items-center gap-2 rounded-xl border-2 border-primary px-8 py-4 text-sm font-bold text-primary transition-all hover:bg-primary hover:text-primary-foreground"
             >
               View Products
             </Link>
+          </div>
+
+          {/* Stats */}
+          <div className="flex flex-wrap items-center gap-10 border-t border-primary/10 pt-8">
+            {[
+              { v: "500+", l: "Partner Farms" },
+              { v: "12k", l: "Tons Shipped" },
+              { v: "24h", l: "Supply Chain" },
+            ].map((s) => (
+              <div key={s.l}>
+                <div
+                  style={{ fontFamily: "var(--font-serif)" }}
+                  className="text-3xl text-primary"
+                >
+                  {s.v}
+                </div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-primary/50">
+                  {s.l}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Image */}
+        <div className="relative flex justify-center lg:col-span-6 lg:justify-end">
+          <div className="relative z-10 w-full max-w-md overflow-hidden rounded-[3rem] shadow-[var(--shadow-glow)] rotate-2 transition-transform duration-700 ease-out hover:rotate-0">
+            <img
+              src={heroFarm}
+              alt="Lush farm rows at golden hour"
+              className="aspect-[4/5] w-full object-cover"
+            />
+            {/* Floating badge */}
+            <div className="absolute bottom-6 left-6 right-6 flex items-center gap-4 rounded-3xl border border-white/60 bg-white/90 p-5 shadow-2xl backdrop-blur-md">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/15 text-accent">
+                <ShieldCheck size={22} />
+              </div>
+              <div>
+                <div className="text-sm font-bold text-primary">Export-Grade Quality</div>
+                <div className="text-xs text-primary/60">B2B traceability & partnerships</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Small inset image */}
+          <div className="absolute -bottom-8 -right-2 z-20 hidden h-44 w-44 overflow-hidden rounded-full border-[10px] border-background shadow-2xl lg:block">
+            <img
+              src={produceGrid}
+              alt="Fresh produce close-up"
+              className="h-full w-full object-cover"
+            />
           </div>
         </div>
       </div>
     </section>
   );
 }
+
 
 const props = [
   { icon: Sprout, title: "Farm-Direct Freshness", desc: "Sourced and harvested directly from our farm in Osun State." },
