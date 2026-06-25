@@ -93,26 +93,6 @@ function Hero() {
             </Link>
           </div>
 
-          {/* Stats */}
-          <div className="flex flex-wrap items-center gap-10 border-t border-primary/10 pt-8">
-            {[
-              { v: "500+", l: "Partner Farms" },
-              { v: "12k", l: "Tons Shipped" },
-              { v: "24h", l: "Supply Chain" },
-            ].map((s) => (
-              <div key={s.l}>
-                <div
-                  style={{ fontFamily: "var(--font-serif)" }}
-                  className="text-3xl text-primary"
-                >
-                  {s.v}
-                </div>
-                <div className="text-[10px] font-bold uppercase tracking-wider text-primary/50">
-                  {s.l}
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Image */}
