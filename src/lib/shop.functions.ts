@@ -149,5 +149,25 @@ export const createOrder = createServerFn({ method: "POST" })
       .insert(lines.map((l) => ({ variant_id: l.variant_id, change: -l.quantity, reason: "sale", note: order.order_number })));
     if (sErr) console.error(sErr);
 
+    try {
+      const { sendTemplateEmail } = await import("@/lib/email-templates/send-email");
+      const items = lines.map((l) => ({ name: l.product_name, label: l.variant_label, quantity: l.quantity, total: l.line_total_ngn }));
+      const common = { orderNumber: order.order_number, items, total: order.total_ngn, address: `${data.delivery_address}, ${data.state}` };
+      await sendTemplateEmail("new-order-alert", "fruitvegfarm@gmail.com", {
+        templateData: { ...common, name: data.customer_name, phone: data.phone, email: data.email || undefined, notes: data.notes },
+        idempotencyKey: `new-order-alert-${order.id}`,
+        replyTo: data.email || undefined,
+      });
+      if (data.email) {
+        await sendTemplateEmail("order-confirmation", data.email, {
+          templateData: { ...common, name: data.customer_name, subtotal, discount, consultation },
+          idempotencyKey: `order-confirmation-${order.id}`,
+          replyTo: "fruitvegfarm@gmail.com",
+        });
+      }
+    } catch (e) {
+      console.error("Order email failed", e);
+    }
+
     return { order_number: order.order_number, total: order.total_ngn, consultation };
   });
