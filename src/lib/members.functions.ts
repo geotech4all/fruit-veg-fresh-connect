@@ -23,5 +23,17 @@ export const joinMembership = createServerFn({ method: "POST" })
       console.error(error);
       throw new Error("Could not save your membership. Please try again.");
     }
+    if (!existing) {
+      try {
+        const { sendTemplateEmail } = await import("@/lib/email-templates/send-email");
+        await sendTemplateEmail("membership-welcome", data.email, {
+          templateData: { name: data.full_name.split(" ")[0] },
+          idempotencyKey: `membership-welcome-${data.email}`,
+          replyTo: "fruitvegfarm@gmail.com",
+        });
+      } catch (e) {
+        console.error("Welcome email failed", e);
+      }
+    }
     return { ok: true, updated: !!existing };
   });
