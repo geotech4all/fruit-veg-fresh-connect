@@ -54,6 +54,7 @@ function AdminPage() {
             <TabsTrigger value="products">Products & prices</TabsTrigger>
             <TabsTrigger value="inventory">Inventory</TabsTrigger>
             <TabsTrigger value="expenses">Production costs</TabsTrigger>
+            <TabsTrigger value="members">Members</TabsTrigger>
             {isAdmin && <TabsTrigger value="team">Team</TabsTrigger>}
           </TabsList>
           <TabsContent value="finance"><Finance /></TabsContent>
@@ -61,6 +62,7 @@ function AdminPage() {
           <TabsContent value="products"><Products /></TabsContent>
           <TabsContent value="inventory"><Inventory /></TabsContent>
           <TabsContent value="expenses"><Expenses /></TabsContent>
+          <TabsContent value="members"><Members /></TabsContent>
           {isAdmin && <TabsContent value="team"><Team /></TabsContent>}
         </Tabs>
       </div>
@@ -457,6 +459,49 @@ function Team() {
           ))}
         </ul>
         <p className="mt-3 text-xs text-muted-foreground">To fully remove someone, remove their invite and their access.</p>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- Members ---------------- */
+function Members() {
+  const [members] = useLoad(async () => {
+    const { data } = await supabase.from("members").select("*").order("created_at", { ascending: false });
+    return data ?? [];
+  }, [] as any[]);
+  const subscribed = members.filter((m) => m.newsletter);
+  const exportCsv = () => {
+    const esc = (v: any) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const rows = [["Name", "Email", "Phone", "Location", "Interests", "Newsletter", "Joined"], ...members.map((m) => [m.full_name, m.email, m.phone, m.location, m.interests.join("; "), m.newsletter ? "Yes" : "No", m.created_at.slice(0, 10)])];
+    const url = URL.createObjectURL(new Blob([rows.map((r) => r.map(esc).join(",")).join("\n")], { type: "text/csv" }));
+    const a = document.createElement("a"); a.href = url; a.download = "fruitveg-members.csv"; a.click(); URL.revokeObjectURL(url);
+  };
+  const mailAll = () => {
+    window.location.href = `mailto:fruitvegfarm@gmail.com?bcc=${encodeURIComponent(subscribed.map((m) => m.email).join(","))}&subject=${encodeURIComponent("New produce available at Fruit&Veg")}`;
+  };
+  return (
+    <div className="mt-4 space-y-4">
+      <div className="flex flex-wrap gap-2">
+        <Stat title="Members" value={members.length} />
+        <Stat title="Newsletter subscribers" value={subscribed.length} />
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <button onClick={exportCsv} className={btn}>Export to spreadsheet</button>
+        <button onClick={mailAll} disabled={!subscribed.length} className="rounded-full border border-border px-4 py-2 text-sm font-semibold disabled:opacity-50">Email all subscribers</button>
+      </div>
+      <div className={card + " overflow-x-auto"}>
+        <table className="w-full text-sm">
+          <thead className="text-left text-muted-foreground"><tr><th>Name</th><th>Email</th><th>Phone</th><th>Location</th><th>Interests</th><th>Joined</th></tr></thead>
+          <tbody>
+            {members.map((m) => (
+              <tr key={m.id} className="border-t border-border">
+                <td className="py-2">{m.full_name}</td><td>{m.email}</td><td>{m.phone ?? "—"}</td><td>{m.location ?? "—"}</td><td>{m.interests.join(", ")}</td><td>{m.created_at.slice(0, 10)}</td>
+              </tr>
+            ))}
+            {!members.length && <tr><td colSpan={6} className="py-4 text-muted-foreground">No members yet.</td></tr>}
+          </tbody>
+        </table>
       </div>
     </div>
   );
