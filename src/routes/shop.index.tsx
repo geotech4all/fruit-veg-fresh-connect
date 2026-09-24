@@ -13,9 +13,9 @@ export const Route = createFileRoute("/shop/")({
   head: () => ({
     meta: [
       { title: "Shop Fresh & Healthy Foods — Fruit&Veg" },
-      { name: "description", content: "Order Teleios Ofada rice, normal rice, healthy flours, oatmeal and dry okro. Free nationwide delivery, pay on delivery." },
+      { name: "description", content: "Order Teleios Ofada rice, normal rice, healthy flours, oatmeal and dry okro. Free nationwide delivery. Orders confirmed on payment." },
       { property: "og:title", content: "Shop — Fruit&Veg" },
-      { property: "og:description", content: "Clean, stone-free rice and healthy foods. Free delivery, pay on delivery." },
+      { property: "og:description", content: "Clean, stone-free rice and healthy foods. Free delivery. Orders confirmed on payment." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
