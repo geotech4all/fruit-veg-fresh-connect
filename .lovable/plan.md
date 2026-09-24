@@ -1,51 +1,54 @@
-# Fruit & Veg — Website Build Plan
+# Fruit&Veg Shop — Ordering Platform Plan
 
-A multi-page marketing site for an agricultural company. Brand: bold text-based "Fruit&Veg" logo, green + orange palette, fresh/clean editorial farm aesthetic inspired by top-tier Lovable templates (think modern produce brands — generous whitespace, warm earthy accents, crisp photography).
+Turn the site into a working shop: customers browse available produce and order, the team manages products, prices, orders and payments. Built one phase at a time, you approve each before the next.
 
-## Design System (built first, used everywhere)
-- Palette: deep farm green (primary), vibrant orange (accent), cream/off-white background, charcoal text
-- Typography: bold display sans for headings (logo + hero), clean humanist sans for body
-- Components: rounded cards, soft shadows, organic motion on scroll, badge/pill tags for product categories
-- Text-based logo: `Fruit&Veg` in heavy weight, green "Fruit" + orange "&Veg" (or similar bold treatment)
+## Phase A — Backend + Team accounts
+- Turn on Lovable Cloud (database + logins).
+- Roles: Admin, Team member (staff), Customer. Roles kept in a separate secure table.
+- Team members join by **invite only**: admin enters an email, the person gets a link to set their password.
+- Sign in page (email/password + Google) for team and customers.
 
-## Phased Delivery
-We'll ship one phase per turn so you can review before we move on.
+## Phase B — Product catalog (Shop page)
+- New **/shop** page listing available products, each with sizes and prices (e.g. 5kg / 10kg / 25kg / 50kg).
+- Product page with photos, description, size picker, "Add to order".
+- "Signature by Geotech4All" mark on every product card and product page.
+- Pre-loaded with your products:
+  - Teleios Ofada Rice — 5kg ₦25,000 · 10kg ₦45,000 · 25kg ₦90,000 · 50kg ₦170,000
+  - Normal Rice — 5kg ₦8,750 · 10kg ₦17,500 · 25kg ₦35,000 · 50kg ₦70,000
+  - Potato Flour 5kg ₦30,000 · Unripe Plantain Flour 5kg ₦35,000 · Oatmeal 5kg ₦30,000
+  - Processed Dry Okro (price to confirm)
+- "Bulk supply" option: request a custom quote instead of a fixed price.
+- Offer banner: free delivery, pay on delivery, money-back guarantee, discount tiers, today-only meal guide gift.
 
-### Phase 1 — Foundation + Home
-- Design tokens in `src/styles.css` (green/orange palette, fonts, radii, shadows)
-- Shared `Header` (logo + nav) and `Footer` (address, email, quick links)
-- Home page (`/`): hero with tagline, value props, featured products, services teaser, CTA to contact
-- SEO meta, sitemap.xml, robots.txt
+## Phase C — Ordering (cart + checkout)
+- Cart, then checkout asking: name, phone, delivery location/address, notes.
+- Automatic discounts: ₦5,000 off from ₦70,000; ₦10,000 off from ₦150,000 (+ free health consultation note).
+- Payment method: **Pay on delivery** (default).
+- Order confirmation page + order number; same-day orders flagged for the free meal guide.
+- Guest checkout, or sign in to see order history.
 
-### Phase 2 — About
-- `/about` route: story, vision, mission, core values (6 cards), brand positioning
-- Hero image of farm
+## Phase D — Admin dashboard
+- Products: add / edit / hide products, sizes, prices, photos, stock status (Available, Out of stock, Coming soon).
+- Orders: list, filter, change status (New → Confirmed → Out for delivery → Delivered / Cancelled).
+- Payment tracking: mark each order Unpaid / Paid (cash, transfer) / Refunded, with amount and date; totals summary.
+- Team: invite members, remove access.
 
-### Phase 3 — Services
-- `/services` route: 5 service categories (Supply, Partnership, Investment, Storage, Agro-processing) with sub-bullets and icons
+## Phase E — Membership
+- Public "Join membership" form (name, email, phone, location, interests).
+- Members get a member discount at checkout and are listed for produce update announcements.
+- Admin can view/export members.
 
-### Phase 4 — Products
-- `/products` route: current farm produce (Okro, Pepper, Tomato, Maize) highlighted, plus fresh produce, processed, and branded sections
-- Product cards with generated imagery
+## Phase F (later, optional)
+- Online card/transfer payments.
+- Email notifications (new order to team, confirmation to customer, produce updates to members).
+- WhatsApp order button.
 
-### Phase 5 — Membership + Why Choose Us
-- `/membership` route: benefits, target customers, "Why Choose Us"
-- Registration CTA (static for now, wires to email/contact later)
+## Technical details
+- Tables: products, product_variants (size, price, stock), orders, order_items, payments, members, user_roles (+ has_role function), invites. RLS on all; public reads active products only; staff/admin manage via role checks.
+- Server functions for checkout (prices and discounts recalculated server-side); admin actions behind auth middleware.
+- Admin area in a protected section; new pages get their own SEO meta; sitemap updated.
 
-### Phase 6 — Contact
-- `/contact` route: head office (Lagos), farm address (Araromi-Owu, Ikire Apomu, Osun), email `fruitvegfarm@gmail.com`, supply-request form (mailto for now; backend later when phone is provided)
-
-### Phase 7 (later, on request)
-- Lovable Cloud backend: membership signup, supply request form submissions, admin inbox
-- Add phone number when provided
-- Optional: blog/news, investor portal
-
-## Technical Notes
-- TanStack Start file-based routing, one file per page under `src/routes/`
-- Each route has its own `head()` meta for SEO
-- Images generated via imagegen (farm, produce shots) — saved to `src/assets/`
-- All colors via semantic tokens — no hardcoded hex in components
-
----
-
-Ready to start with **Phase 1 (Foundation + Home)** on your approval.
+## Open questions (can answer as we go)
+- Dry okro sizes and prices.
+- Member discount amount (e.g. fixed 5%)?
+- "Geotech4All signature": a small "Powered by Geotech4All" badge, or a specific logo you will send?
