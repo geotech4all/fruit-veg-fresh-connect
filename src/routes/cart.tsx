@@ -32,19 +32,36 @@ function CartPage() {
   const [busy, setBusy] = useState(false);
   const { discount, consultation } = computeDiscount(cart.subtotal);
 
+  const formRef = useRef<HTMLFormElement>(null);
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(SAVED_KEY) ?? "null");
+      const form = formRef.current;
+      if (!saved || !form) return;
+      for (const k of SAVED_FIELDS) {
+        const el = form.elements.namedItem(k) as HTMLInputElement | null;
+        if (el && saved[k] && !el.value) el.value = saved[k];
+      }
+    } catch {}
+  }, [cart.items.length]);
+
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
+    const get = (k: string) => String(f.get(k) ?? "").trim();
+    if (f.get("remember")) localStorage.setItem(SAVED_KEY, JSON.stringify(Object.fromEntries(SAVED_FIELDS.map((k) => [k, get(k)]))));
+    else localStorage.removeItem(SAVED_KEY);
+    const address = [get("address"), get("city"), get("landmark") && `Near ${get("landmark")}`].filter(Boolean).join(", ");
     setBusy(true);
     try {
       const res = await place({
         data: {
-          customer_name: String(f.get("name") ?? ""),
-          phone: String(f.get("phone") ?? ""),
-          email: String(f.get("email") ?? ""),
-          delivery_address: String(f.get("address") ?? ""),
-          state: String(f.get("state") ?? ""),
-          notes: String(f.get("notes") ?? ""),
+          customer_name: get("name"),
+          phone: get("phone"),
+          email: get("email"),
+          delivery_address: address,
+          state: get("state"),
+          notes: get("notes"),
           items: cart.items.map((i) => ({ variant_id: i.variant_id, quantity: i.quantity })),
         },
       });
@@ -101,15 +118,23 @@ function CartPage() {
           </div>
         </div>
 
-        <form onSubmit={submit} className="h-fit space-y-3 rounded-2xl border border-border bg-card p-6">
+        <form ref={formRef} onSubmit={submit} className="h-fit space-y-3 rounded-2xl border border-border bg-card p-6">
           <h2 className="text-lg font-bold">Delivery details</h2>
           <p className="text-sm text-muted-foreground">We deliver nationwide. Pay when your order arrives.</p>
-          <input name="name" required maxLength={100} placeholder="Full name" className={input} />
-          <input name="phone" required maxLength={20} placeholder="Phone number" className={input} />
-          <input name="email" type="email" maxLength={255} defaultValue={user?.email ?? ""} placeholder="Email (optional)" className={input} />
-          <input name="state" required maxLength={60} placeholder="State / City" className={input} />
-          <textarea name="address" required maxLength={500} rows={3} placeholder="Delivery address" className={input} />
-          <textarea name="notes" maxLength={1000} rows={2} placeholder="Notes (optional)" className={input} />
+          <p className="pt-1 text-xs font-semibold uppercase tracking-wider text-accent">Contact</p>
+          <label className="block text-sm font-medium">Full name<input name="name" required minLength={2} maxLength={100} autoComplete="name" className={input + " mt-1"} /></label>
+          <label className="block text-sm font-medium">Phone / WhatsApp<input name="phone" type="tel" required minLength={7} maxLength={20} pattern="[0-9+ ()-]{7,20}" autoComplete="tel" placeholder="e.g. 0803 000 0000" className={input + " mt-1"} /></label>
+          <label className="block text-sm font-medium">Email (optional)<input name="email" type="email" maxLength={255} defaultValue={user?.email ?? ""} autoComplete="email" className={input + " mt-1"} /></label>
+          <p className="pt-2 text-xs font-semibold uppercase tracking-wider text-accent">Delivery address</p>
+          <label className="block text-sm font-medium">State<select name="state" required className={input + " mt-1"} defaultValue="">
+            <option value="" disabled>Select state</option>
+            {NG_STATES.map((s) => <option key={s}>{s}</option>)}
+          </select></label>
+          <label className="block text-sm font-medium">City / Town<input name="city" required maxLength={60} autoComplete="address-level2" className={input + " mt-1"} /></label>
+          <label className="block text-sm font-medium">Street address<textarea name="address" required minLength={5} maxLength={400} rows={2} autoComplete="street-address" placeholder="House number, street, area" className={input + " mt-1"} /></label>
+          <label className="block text-sm font-medium">Nearest landmark / bus stop (optional)<input name="landmark" maxLength={80} className={input + " mt-1"} /></label>
+          <label className="block text-sm font-medium">Notes (optional)<textarea name="notes" maxLength={1000} rows={2} placeholder="Best time to deliver, etc." className={input + " mt-1"} /></label>
+          <label className="flex items-center gap-2 text-sm text-muted-foreground"><input type="checkbox" name="remember" defaultChecked /> Remember my details on this device</label>
           <button disabled={busy} className="w-full rounded-full bg-primary py-3.5 text-sm font-semibold text-primary-foreground disabled:opacity-60">
             {busy ? "Placing order…" : `Place order · ${formatNaira(cart.subtotal - discount)}`}
           </button>
