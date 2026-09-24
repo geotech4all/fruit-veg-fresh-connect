@@ -144,6 +144,10 @@ export const createOrder = createServerFn({ method: "POST" })
       .from("order_items")
       .insert(lines.map((l) => ({ ...l, order_id: order.id })));
     if (iErr) console.error(iErr);
+    const { error: sErr } = await supabaseAdmin
+      .from("stock_movements")
+      .insert(lines.map((l) => ({ variant_id: l.variant_id, change: -l.quantity, reason: "sale", note: order.order_number })));
+    if (sErr) console.error(sErr);
 
     return { order_number: order.order_number, total: order.total_ngn, consultation };
   });
