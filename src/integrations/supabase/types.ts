@@ -14,6 +14,47 @@ export type Database = {
   }
   public: {
     Tables: {
+      expenses: {
+        Row: {
+          amount_ngn: number
+          category: string
+          created_at: string
+          description: string
+          id: string
+          product_id: string | null
+          recorded_by: string | null
+          spent_on: string
+        }
+        Insert: {
+          amount_ngn: number
+          category?: string
+          created_at?: string
+          description: string
+          id?: string
+          product_id?: string | null
+          recorded_by?: string | null
+          spent_on?: string
+        }
+        Update: {
+          amount_ngn?: number
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          product_id?: string | null
+          recorded_by?: string | null
+          spent_on?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expenses_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       members: {
         Row: {
           created_at: string
@@ -214,6 +255,7 @@ export type Database = {
       }
       product_variants: {
         Row: {
+          cost_price_ngn: number
           created_at: string
           id: string
           in_stock: boolean
@@ -221,8 +263,10 @@ export type Database = {
           price_ngn: number
           product_id: string
           sort_order: number
+          stock_qty: number
         }
         Insert: {
+          cost_price_ngn?: number
           created_at?: string
           id?: string
           in_stock?: boolean
@@ -230,8 +274,10 @@ export type Database = {
           price_ngn: number
           product_id: string
           sort_order?: number
+          stock_qty?: number
         }
         Update: {
+          cost_price_ngn?: number
           created_at?: string
           id?: string
           in_stock?: boolean
@@ -239,6 +285,7 @@ export type Database = {
           price_ngn?: number
           product_id?: string
           sort_order?: number
+          stock_qty?: number
         }
         Relationships: [
           {
@@ -294,6 +341,47 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      stock_movements: {
+        Row: {
+          change: number
+          created_at: string
+          id: string
+          note: string | null
+          reason: string
+          recorded_by: string | null
+          unit_cost_ngn: number | null
+          variant_id: string
+        }
+        Insert: {
+          change: number
+          created_at?: string
+          id?: string
+          note?: string | null
+          reason?: string
+          recorded_by?: string | null
+          unit_cost_ngn?: number | null
+          variant_id: string
+        }
+        Update: {
+          change?: number
+          created_at?: string
+          id?: string
+          note?: string | null
+          reason?: string
+          recorded_by?: string | null
+          unit_cost_ngn?: number | null
+          variant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_movements_variant_id_fkey"
+            columns: ["variant_id"]
+            isOneToOne: false
+            referencedRelation: "product_variants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       team_invites: {
         Row: {
