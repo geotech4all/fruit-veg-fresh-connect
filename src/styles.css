@@ -127,3 +127,8 @@
     letter-spacing: -0.02em;
   }
 }
+
+@keyframes fv-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}

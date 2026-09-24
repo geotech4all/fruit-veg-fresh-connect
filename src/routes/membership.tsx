@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Award, Users, TrendingUp, Truck, ShieldCheck, Leaf, Globe, ArrowRight, HeartHandshake, PackageCheck, BadgeCheck, Store, Factory, ClipboardCheck } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
+import { JoinMembership } from "@/components/JoinMembership";
 
 import { getRequestOrigin } from "@/lib/origin.functions";
 
@@ -132,6 +133,13 @@ function Membership() {
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <Link
+                to="/membership"
+                hash="join"
+                className="inline-flex items-center gap-2 rounded-full bg-primary-foreground px-6 py-3.5 text-sm font-semibold text-primary shadow-lg"
+              >
+                Join Membership
+              </Link>
+              <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-lg transition-all hover:brightness-105 hover:shadow-xl"
               >
@@ -236,6 +244,8 @@ function Membership() {
           ))}
         </div>
       </section>
+
+      <JoinMembership />
 
       {/* CTA Banner */}
       <section className="mx-auto max-w-7xl px-4 pb-8 md:px-8">

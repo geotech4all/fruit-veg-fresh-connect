@@ -4,9 +4,14 @@ import heroFarm from "@/assets/hero-farm.jpg";
 import produceGrid from "@/assets/produce-grid.jpg";
 import { SiteLayout } from "@/components/SiteLayout";
 import { getRequestOrigin } from "@/lib/origin.functions";
+import { listProducts } from "@/lib/shop.functions";
+import { ProduceTicker } from "@/components/ProduceTicker";
 
 export const Route = createFileRoute("/")({
-  loader: async () => ({ origin: await getRequestOrigin() }),
+  loader: async () => {
+    const [origin, products] = await Promise.all([getRequestOrigin(), listProducts().catch(() => [])]);
+    return { origin, products };
+  },
   head: ({ loaderData }) => {
     const origin = loaderData?.origin ?? "";
     const ogImage = `${origin}/og-image.jpg`;
@@ -27,6 +32,8 @@ export const Route = createFileRoute("/")({
         { property: "og:image:alt", content: "Fruit&Veg farm at golden hour" },
         { name: "twitter:image", content: ogImage },
         { name: "twitter:title", content: "Fruit&Veg — Fresh From Farm to You" },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:description", content: "Connecting farms to markets with freshness, quality, and sustainability." },
       ],
     };
@@ -35,8 +42,10 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const { products } = Route.useLoaderData();
   return (
     <SiteLayout>
+      <ProduceTicker products={products} />
       <Hero />
       <ValueProps />
       <FeaturedProducts />
