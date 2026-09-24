@@ -19,7 +19,7 @@ const nav = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const { count } = useCart();
-  const { user } = useAuth();
+  const { user, isTeam } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-md">
@@ -39,6 +39,9 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
+          {isTeam && (
+            <Link to="/admin" className="hidden text-sm font-semibold text-primary md:inline">Dashboard</Link>
+          )}
           {user ? (
             <button
               onClick={() => supabase.auth.signOut()}
