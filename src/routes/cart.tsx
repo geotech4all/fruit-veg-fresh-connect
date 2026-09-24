@@ -13,9 +13,9 @@ export const Route = createFileRoute("/cart")({
   head: () => ({
     meta: [
       { title: "Your Order — Fruit&Veg" },
-      { name: "description", content: "Review your order and checkout. Free delivery nationwide, pay on delivery." },
+      { name: "description", content: "Review your order and checkout. Free delivery nationwide." },
       { property: "og:title", content: "Your Order — Fruit&Veg" },
-      { property: "og:description", content: "Checkout with free delivery and payment on delivery." },
+      { property: "og:description", content: "Checkout with free nationwide delivery." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -113,10 +113,10 @@ function CartPage() {
             <Row label="Subtotal" value={formatNaira(cart.subtotal)} />
             <Row label="Discount" value={discount ? `− ${formatNaira(discount)}` : "—"} />
             <Row label="Delivery" value="Free" />
-            <div className="border-t border-border pt-2"><Row label="Total (pay on delivery)" value={formatNaira(cart.subtotal - discount)} bold /></div>
+            <div className="border-t border-border pt-2"><Row label="Total" value={formatNaira(cart.subtotal - discount)} bold /></div>
             {consultation && <p className="pt-2 text-primary">Includes a free 30-second health consultation.</p>}
-            {!discount && cart.subtotal < 70000 && (
-              <p className="pt-2 text-muted-foreground">Add {formatNaira(70000 - cart.subtotal)} more to get ₦5,000 off.</p>
+            {!discount && cart.subtotal <= 200000 && (
+              <p className="pt-2 text-muted-foreground">Spend over ₦200,000 (add {formatNaira(200001 - cart.subtotal)} more) to get ₦10,000 off.</p>
             )}
           </div>
         </div>
