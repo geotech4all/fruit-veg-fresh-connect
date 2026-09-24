@@ -8,6 +8,13 @@
       "when": 1790280070924,
       "tag": "0000_shop_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790281256966,
+      "tag": "0001_finance_inventory",
+      "breakpoints": true
     }
   ]
 }
